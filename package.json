@@ -52,6 +52,7 @@
     "@storybook/addon-links": "^6.4.0",
     "@storybook/addon-storyshots": "^6.4.9",
     "@storybook/angular": "^6.4.0",
+    "@storybook/jest": "0.0.5",
     "@storybook/testing-library": "0.0.7",
     "@testing-library/angular": "^10.3.0",
     "@types/jest": "^26.0.20",

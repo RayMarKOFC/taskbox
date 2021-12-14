@@ -4,7 +4,8 @@ import { Task } from '../models/task.model';
 
 export const actions = {
   ARCHIVE_TASK: 'ARCHIVE_TASK',
-  PIN_TASK: 'PIN_TASK'
+  PIN_TASK: 'PIN_TASK',
+  ERROR: 'APP_ERROR'
 };
 
 export class ArchiveTask {
@@ -19,6 +20,12 @@ export class PinTask {
   constructor(public payload: string) {}
 }
 
+export class AppError {
+  static readonly type = actions.ERROR;
+
+  constructor(public payload: boolean) {}
+}
+
 const defaultTasks = {
   1: { id: '1', title: 'Something', state: 'TASK_INBOX' },
   2: { id: '2', title: 'Something more', state: 'TASK_INBOX' },
@@ -28,12 +35,14 @@ const defaultTasks = {
 
 export class TaskStateModel {
   entities: { [id: number]: Task };
+  error: boolean;
 }
 
 @State<TaskStateModel>({
   name: 'tasks',
   defaults: {
-    entities: defaultTasks
+    entities: defaultTasks,
+    error: false
   }
 })
 export class TasksState {
@@ -41,6 +50,12 @@ export class TasksState {
   static getAllTasks(state: TaskStateModel) {
     const entities = state.entities;
     return Object.keys(entities).map(id => entities[+id]);
+  }
+
+  @Selector()
+  static getError(state: TaskStateModel) {
+    const { error } = state;
+    return error;
   }
 
   @Action(PinTask)
@@ -68,6 +83,14 @@ export class TasksState {
 
     patchState({
       entities
+    });
+  }
+
+  @Action(AppError)
+  setAppError({ patchState, getState }: StateContext<TaskStateModel>, { payload }: AppError) {
+    const state = getState();
+    patchState({
+      error: !state.error
     });
   }
 }
