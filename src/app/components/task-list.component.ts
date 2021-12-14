@@ -1,4 +1,8 @@
-import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { Component } from '@angular/core';
+import { Select, Store } from '@ngxs/store';
+import { Observable } from 'rxjs';
+
+import { ArchiveTask, PinTask, TasksState } from '../state/task.state';
 
 import { Task } from '../models/task.model';
 
@@ -7,21 +11,15 @@ import { Task } from '../models/task.model';
   templateUrl: './task-list.component.html'
 })
 export class TaskListComponent {
-  tasksInOrder: Task[] = [];
+  @Select(TasksState.getAllTasks) tasks$: Observable<Task[]>;
 
-  @Input() loading: boolean = false;
+  constructor(private store: Store) {}
 
-  @Input()
-  set tasks(arr: Task[]) {
-    this.tasksInOrder = [
-      ...arr.filter(t => t.state === 'TASK_PINNED'),
-      ...arr.filter(t => t.state !== 'TASK_PINNED')
-    ];
+  archiveTask(id: string) {
+    this.store.dispatch(new ArchiveTask(id));
   }
 
-  @Output()
-  onPinTask = new EventEmitter<Event>();
-
-  @Output()
-  onArchiveTask = new EventEmitter<Event>();
+  pinTask(id: string) {
+    this.store.dispatch(new PinTask(id));
+  }
 }
