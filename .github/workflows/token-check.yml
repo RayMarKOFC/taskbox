@@ -1,0 +1,11 @@
+name: 'Experimenting with Actions'
+
+on: push
+
+jobs:
+  job1:
+    name: Experimenting
+    runs-on: ubuntu-latest
+    steps:
+      - run: curl -s -X GET -H 'Authorization: token ${{secrets.GITHUB_TOKEN}}' https://api.github.com/repos/${{GITHUB_REPOSITORY}}/releases
+
