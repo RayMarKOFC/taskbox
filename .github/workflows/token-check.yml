@@ -8,4 +8,4 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - run: "curl -s -X GET -H 'Authorization: token ${{ secrets.GITHUB_TOKEN }}' https://api.github.com/repos/${{ github.repository }}/releases"
-      - run: "curl -s -X GET -H 'Authorization: token ${{ secrets.GITHUB_TOKEN }}' https://api.github.com/users/${{ github.repository_owner }}/repos"
+      - run: "curl -s -X GET -H 'Authorization: token ${{ secrets.GITHUB_TOKEN }}' https://api.github.com/orgs/kofc-eBusiness/repos"
